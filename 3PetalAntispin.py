@@ -37,9 +37,9 @@ def init():
 def update(frame):
     # Arm and poi positions
     arm_angle = -2 * np.pi * frame / 360
-    poi_angle = -2 * arm_angle + (np.pi / 2)  # (np.pi / -) For top centred, positive for bottom centred
+    poi_angle = -2 * arm_angle + (np.pi / 2)
     arm_x = arm_length * math.cos(arm_angle)
-    arm_y = arm_length * math.sin(arm_angle)
+    arm_y = arm_length * math.sin(arm_angle) + tether_length / 2  # Add tether_length / 2 to vertically center
     poi_x = arm_x + tether_length * math.cos(poi_angle)
     poi_y = arm_y + tether_length * math.sin(poi_angle)
 

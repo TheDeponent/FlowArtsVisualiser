@@ -12,33 +12,34 @@ trail_length = num_frames  # Length of the trail in frames
 
 # Calculate angles
 theta = np.linspace(0, 2 * np.pi, num_frames)
-theta_clockwise = np.linspace(np.pi, -1 * np.pi, num_frames)  # Clockwise circle with a shift for green and yellow poi
+theta_clockwise = np.linspace(0, -2 * np.pi, num_frames)  # Clockwise circle for green and yellow poi
 antispin_theta = np.linspace(0, -10 * np.pi, num_frames)  # Anticlockwise rotation for antispin
-antispin_theta2 = np.linspace(0, 10 * np.pi, num_frames)  # Clockwise rotation with a phase shift for Head leading on both sides
+antispin_theta_right = np.linspace(0, -8 * np.pi, num_frames)  # Anticlockwise rotation for right poi antispin
+
 
 # Calculate coordinates for gunslinger antispin (first poi)
 rotation_center_x = (armspan_meters / 2) * np.cos(theta)
 rotation_center_y = (armspan_meters / 2) * np.sin(theta)
-antispin_head_x = rotation_center_x + (radius / 2) * np.cos(antispin_theta)
-antispin_head_y = rotation_center_y + (radius / 2) * np.sin(antispin_theta)
-antispin_handle_x = rotation_center_x - (radius / 2) * np.cos(antispin_theta)
-antispin_handle_y = rotation_center_y - (radius / 2) * np.sin(antispin_theta)
+antispin_head_x = rotation_center_x + (radius / 2) * np.cos(antispin_theta_right)
+antispin_head_y = rotation_center_y + (radius / 2) * np.sin(antispin_theta_right)
+antispin_handle_x = rotation_center_x - (radius / 2) * np.cos(antispin_theta_right)
+antispin_handle_y = rotation_center_y - (radius / 2) * np.sin(antispin_theta_right)
 
 # Calculate coordinates for gunslinger antispin (green and yellow poi)
 rotation_center_x2 = (armspan_meters / 2) * np.cos(theta_clockwise)  # Use theta_clockwise here
 rotation_center_y2 = (armspan_meters / 2) * np.sin(theta_clockwise)  # Use theta_clockwise here
-antispin_head_x2 = rotation_center_x2 + (radius / 2) * np.cos(antispin_theta2)  # Use antispin_theta2 here
-antispin_head_y2 = rotation_center_y2 + (radius / 2) * np.sin(antispin_theta2)  # Use antispin_theta2 here
-antispin_handle_x2 = rotation_center_x2 - (radius / 2) * np.cos(antispin_theta2)  # Use antispin_theta2 here
-antispin_handle_y2 = rotation_center_y2 - (radius / 2) * np.sin(antispin_theta2)  # Use antispin_theta2 here
+antispin_head_x2 = rotation_center_x2 + (radius / 2) * np.cos(antispin_theta)
+antispin_head_y2 = rotation_center_y2 + (radius / 2) * np.sin(antispin_theta)
+antispin_handle_x2 = rotation_center_x2 - (radius / 2) * np.cos(antispin_theta)
+antispin_handle_y2 = rotation_center_y2 - (radius / 2) * np.sin(antispin_theta)
 
 # Set up the plot
 fig, ax = plt.subplots()
 ax.set_xlim(-armspan_meters, armspan_meters)
 ax.set_ylim(-armspan_meters, armspan_meters)
 ax.set_aspect('equal', adjustable='box')
-ax.set_title('12 Petal Antispin vs 12 Petal Antispin - Same Time Opposite Direction')
-ax.set_xlabel('Head Leading v Head Leading')
+ax.set_title('12 Petal Antispin vs 8 Petal inspin - Split Time Opposite Direction')
+ax.set_xlabel('Head leading vs Head Leading')
 ax.set_xticks([])
 ax.set_yticks([])
 
@@ -106,4 +107,4 @@ ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
 # Save the animation as a GIF
 writer = PillowWriter(fps=15)
-ani.save("12pAntispinVs12pAntiSpinSameOpp.gif", writer=writer)
+ani.save("10pAntiSpinVs8pInSpinSplitOpp.gif", writer=writer)

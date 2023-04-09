@@ -31,8 +31,8 @@ fig, ax = plt.subplots()
 ax.set_xlim(-armspan_meters, armspan_meters)
 ax.set_ylim(-armspan_meters, armspan_meters)
 ax.set_aspect('equal', adjustable='box')
-ax.set_title('Gunslinger 10 Petal Antispin vs Extension')
-ax.set_xlabel('Poi = 45cm, Performer Armspan 5\'9"')
+ax.set_title('12 Petal Antispin vs Extension - Same time Same direction')
+ax.set_xlabel('Head leading vs Head leading')
 ax.set_xticks([])
 ax.set_yticks([])
 
@@ -113,4 +113,4 @@ ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
 # Save the animation as a GIF
 writer = PillowWriter(fps=15)
-ani.save("Gunslinger10PetalAntispinVsExtension.gif", writer=writer)
+ani.save("12PetalAntispinVsExtension.gif", writer=writer)

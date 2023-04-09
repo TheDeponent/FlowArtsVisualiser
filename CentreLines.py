@@ -41,7 +41,7 @@ def init():
 def update(frame):
     # Arm and poi positions
     arm_angle = -2 * np.pi * frame / 360
-    poi_angle = -2 * arm_angle + (np.pi / 2)  # (np.pi / -) For top centred, positive for bottom centred
+    poi_angle = -4 * arm_angle + (np.pi / 2)  # (np.pi / -) For top centred, positive for bottom centred
     arm_x = arm_length * math.cos(arm_angle)
     arm_y = arm_length * math.sin(arm_angle)
     poi_x = arm_x + tether_length * math.cos(poi_angle)
@@ -57,4 +57,4 @@ ani = FuncAnimation(fig, update, frames=360, init_func=init, blit=True)
 
 # Save as GIF using PillowWriter
 writer = PillowWriter(fps=24)
-ani.save("3_petal_C.gif", writer=writer)
+ani.save("5A_Petal_Centered.gif", writer=writer)

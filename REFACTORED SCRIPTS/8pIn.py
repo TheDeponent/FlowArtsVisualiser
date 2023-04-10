@@ -57,11 +57,18 @@ def update(frame):
     poi_handle_trail_x.append(poi_handle_x[frame])
     poi_handle_trail_y.append(poi_handle_y[frame])
 
+    if frame == 0:
+        poi_head_trail_x.clear()
+        poi_head_trail_y.clear()
+        poi_handle_trail_x.clear()
+        poi_handle_trail_y.clear()
+
     poi_head_trail.set_data(poi_head_trail_x[-trail_length:], poi_head_trail_y[-trail_length:])
     poi_handle_trail.set_data(poi_handle_trail_x[-trail_length:], poi_handle_trail_y[-trail_length:])
 
     poi_tether.set_data([poi_head_x[frame], poi_handle_x[frame]],
                         [poi_head_y[frame], poi_handle_y[frame]])
+
 
     return (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether)
 

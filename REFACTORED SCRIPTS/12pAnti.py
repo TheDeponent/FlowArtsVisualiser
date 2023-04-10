@@ -12,7 +12,7 @@ trail_length = num_frames  # Length of the trail in frames
 
 # Calculate angles
 theta_1 = np.linspace(0, 2 * np.pi, num_frames)
-theta_2 = np.linspace(0, -8 * np.pi, num_frames)
+theta_2 = np.linspace(0, -12 * np.pi, num_frames)
 
 # Calculate coordinates
 rotation_center_x = (armspan_meters / 2) * np.cos(theta_1)
@@ -27,7 +27,7 @@ fig, ax = plt.subplots()
 ax.set_xlim(-armspan_meters, armspan_meters)
 ax.set_ylim(-armspan_meters, armspan_meters)
 ax.set_aspect('equal', adjustable='box')
-ax.set_title('10 Petal Antispin')
+ax.set_title('12 Petal Antispin')
 ax.set_xlabel('Head Leading')
 ax.set_xticks([])
 ax.set_yticks([])
@@ -76,3 +76,4 @@ ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
 # Display the animation
 plt.show()
+

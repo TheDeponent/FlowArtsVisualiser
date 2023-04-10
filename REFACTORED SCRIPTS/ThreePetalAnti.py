@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
-def generate_ThreePetalAnti(fig, ax):
+def generate_ThreePetalAnti(fig, ax, head_color, handle_color):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
@@ -32,10 +32,10 @@ def generate_ThreePetalAnti(fig, ax):
     ax.set_yticks([])
 
     # Poi elements
-    poi_head, = ax.plot([], [], 'ro', markersize=10)
-    poi_head_trail, = ax.plot([], [], color='r', linewidth=1.5, alpha=0.5)
-    poi_handle, = ax.plot([], [], 'bo', markersize=10)
-    poi_handle_trail, = ax.plot([], [], color='g', linewidth=1.5, alpha=0, visible=False)
+    poi_head, = ax.plot([], [], 'go', markersize=10, color=head_color)
+    poi_head_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=head_color)
+    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=0.5, color=handle_color)
+    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.0, color=handle_color)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 
     ax.add_line(poi_tether)

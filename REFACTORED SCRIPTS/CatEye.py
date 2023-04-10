@@ -5,7 +5,7 @@ from matplotlib.lines import Line2D
 
 #FUCK THIS PATTERN IN PARTICULAR.
 
-def generate_Cateye(fig, ax):
+def generate_Cateye(fig, ax, head_color, handle_color):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
@@ -46,10 +46,10 @@ def generate_Cateye(fig, ax):
     ax.set_yticks([])
 
     # Poi elements
-    poi_head, = ax.plot([], [], 'go', markersize=10)
-    poi_head_trail, = ax.plot([], [], color='g', linewidth=1.5, alpha=0.5)
-    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=0.5)
-    poi_handle_trail, = ax.plot([], [], color='y', linewidth=1.5, alpha=0.5)
+    poi_head, = ax.plot([], [], 'go', markersize=10, color=head_color)
+    poi_head_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=head_color)
+    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=0.5, color=handle_color)
+    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=handle_color)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 
     ax.add_line(poi_tether)

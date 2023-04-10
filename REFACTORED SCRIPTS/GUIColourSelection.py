@@ -14,20 +14,16 @@ from TwoPetalInspin import generate_TwoPetalInspin
 from FourPetalInspin import generate_FourPetalInspin
 from CatEye import generate_Cateye
 
-def combine_patterns(fig, ax, pattern1, pattern2, head_color, handle_color):
-    # Add elements from both patterns to the same plot and store their update functions
-    ax, update1, elements1 = pattern1(fig, ax, head_color, handle_color)
-    ax, update2, elements2 = pattern2(fig, ax, head_color, handle_color)
+def combine_patterns(fig, ax, pattern1, pattern2, head_color1, handle_color1, head_color2, handle_color2):
+    ax, update1, elements1 = pattern1(fig, ax, head_color1, handle_color1)
+    ax, update2, elements2 = pattern2(fig, ax, head_color2, handle_color2)
 
-    # Combined update function that handles both patterns
     def combined_update(frame):
         return update1(frame) + update2(frame)
 
-    # Create a single animation for both patterns
     num_frames = 360
     ani = FuncAnimation(fig, combined_update, frames=num_frames, interval=20, blit=True)
 
-    # Display the combined plot
     plt.show()
 
 if __name__ == "__main__":
@@ -39,14 +35,14 @@ if __name__ == "__main__":
 patterns = {
     "Extension": generate_Extension,
     "CatEye": generate_Cateye,
-    "3 Petal Antispin": generate_ThreePetalAnti,
-    "5 Petal Antispin": generate_FivePetalAnti,
-    "10 Petal Antispin (Gunslinger)": generate_TenPetalAnti,
     "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
+    "10 Petal Antispin (Gunslinger)": generate_TenPetalAnti,
     "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,
+    "5 Petal Antispin": generate_FivePetalAnti,
     "4 Petal Antispin": generate_FourPetalAnti,
-    "2 Petal Inspin": generate_TwoPetalInspin,
     "4 Petal Inspin": generate_FourPetalInspin,
+    "3 Petal Antispin": generate_ThreePetalAnti,
+    "2 Petal Inspin": generate_TwoPetalInspin,
 }
 
 def combine_selected_patterns():
@@ -55,11 +51,13 @@ def combine_selected_patterns():
     pattern1 = patterns[pattern1_name]
     pattern2 = patterns[pattern2_name]
 
-    head_color = poi_head_color.get()
-    handle_color = poi_handle_color.get()
+    head_color1 = poi_head_color1.get()
+    handle_color1 = poi_handle_color1.get()
+    head_color2 = poi_head_color2.get()
+    handle_color2 = poi_handle_color2.get()
 
     fig, ax = plt.subplots()
-    combine_patterns(fig, ax, pattern1, pattern2, head_color, handle_color)
+    combine_patterns(fig, ax, pattern1, pattern2, head_color1, handle_color1, head_color2, handle_color2)
 
 def choose_color(color_var, display_label):
     color = colorchooser.askcolor()[1]
@@ -71,8 +69,10 @@ def choose_color(color_var, display_label):
 root = tk.Tk()
 root.title("Pattern Combiner")
 
-poi_head_color = tk.StringVar(value='green')
-poi_handle_color = tk.StringVar(value='yellow')
+poi_head_color1 = tk.StringVar(value='green')
+poi_handle_color1 = tk.StringVar(value='purple')
+poi_head_color2 = tk.StringVar(value='blue')
+poi_handle_color2 = tk.StringVar(value='red')
 
 # Create labels and dropdown menus for selecting patterns
 tk.Label(root, text="Left Hand").grid(row=0, column=0)
@@ -87,19 +87,33 @@ pattern2_menu = ttk.Combobox(root, textvariable=selected_pattern2, values=list(p
 pattern2_menu.grid(row=1, column=1)
 pattern2_menu.current(1)
 
-# Color selection for poi head
-tk.Label(root, text="Poi Head Color:").grid(row=2, column=0)
-poi_head_color_display = tk.Label(root, bg=poi_head_color.get(), width=10)
+# Color selection for poi head (Pattern 1)
+tk.Label(root, text="Poi Head Color (Pattern 1):").grid(row=2, column=0)
+poi_head_color_display = tk.Label(root, bg=poi_head_color1.get(), width=10)
 poi_head_color_display.grid(row=2, column=1)
-poi_head_color_button = tk.Button(root, text="Choose Color", command=lambda: choose_color(poi_head_color, poi_head_color_display))
+poi_head_color_button = tk.Button(root, text="Choose Color", command=lambda: choose_color(poi_head_color1, poi_head_color_display))
 poi_head_color_button.grid(row=2, column=2)
 
-# Color selection for poi handle
-tk.Label(root, text="Poi Handle Color:").grid(row=3, column=0)
-poi_handle_color_display = tk.Label(root, bg=poi_handle_color.get(), width=10)
+# Color selection for poi handle (Pattern 1)
+tk.Label(root, text="Poi Handle Color (Pattern 1):").grid(row=3, column=0)
+poi_handle_color_display = tk.Label(root, bg=poi_handle_color1.get(), width=10)
 poi_handle_color_display.grid(row=3, column=1)
-poi_handle_color_button = tk.Button(root, text="Choose Color", command=lambda: choose_color(poi_handle_color, poi_handle_color_display))
+poi_handle_color_button = tk.Button(root, text="Choose Color", command=lambda: choose_color(poi_handle_color1, poi_handle_color_display))
 poi_handle_color_button.grid(row=3, column=2)
+
+# Color selection for poi head (Pattern 2)
+tk.Label(root, text="Poi Head Color (Pattern 2):").grid(row=4, column=0)
+poi_head_color_display2 = tk.Label(root, bg=poi_head_color2.get(), width=10)
+poi_head_color_display2.grid(row=4, column=1)
+poi_head_color_button2 = tk.Button(root, text="Choose Color", command=lambda: choose_color(poi_head_color2, poi_head_color_display2))
+poi_head_color_button2.grid(row=4, column=2)
+
+# Color selection for poi handle (Pattern 2)
+tk.Label(root, text="Poi Handle Color (Pattern 2):").grid(row=5, column=0)
+poi_handle_color_display2 = tk.Label(root, bg=poi_handle_color2.get(), width=10)
+poi_handle_color_display2.grid(row=5, column=1)
+poi_handle_color_button2 = tk.Button(root, text="Choose Color", command=lambda: choose_color(poi_handle_color2, poi_handle_color_display2))
+poi_handle_color_button2.grid(row=5, column=2)
 
 # Create a button to combine the selected patterns
 combine_button = tk.Button(root, text="Combine Patterns", command=combine_selected_patterns)

@@ -33,9 +33,9 @@ def generate_TwelvePetalAnti(fig, ax, head_color, handle_color):
     ax.set_yticks([])
 
     # Poi elements
-    poi_head, = ax.plot([], [], 'go', markersize=10, color=head_color)
+    poi_head, = ax.plot([], [], 'go', markersize=10, alpha=1, color=head_color)
     poi_head_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=head_color)
-    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=0.5, color=handle_color)
+    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=1, color=handle_color)
     poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=handle_color)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 

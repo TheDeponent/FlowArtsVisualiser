@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
-def generate_Extension(fig, ax):
+def generate_TenPetalAnti(fig, ax):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
@@ -12,31 +12,31 @@ def generate_Extension(fig, ax):
     trail_length = num_frames  # Length of the trail in frames
 
     # Calculate angles
-    theta_1 = np.linspace(0, -2 * np.pi, num_frames)
-    theta_2 = np.linspace(0, 2 * np.pi, num_frames)
+    theta_1 = np.linspace(0, 2 * np.pi, num_frames)
+    theta_2 = np.linspace(0, -8 * np.pi, num_frames)
 
     # Calculate coordinates
     rotation_center_x = (armspan_meters / 2) * np.cos(theta_1)
     rotation_center_y = (armspan_meters / 2) * np.sin(theta_1)
-    poi_head_x = rotation_center_x + (armspan_meters / 2 - radius) * np.cos(theta_1)
-    poi_head_y = rotation_center_y + (armspan_meters / 2 - radius) * np.sin(theta_1)
-    poi_handle_x = poi_head_x + radius * np.cos(theta_1 + np.pi) # follow the base of the tether
-    poi_handle_y = poi_head_y + radius * np.sin(theta_1 + np.pi) # follow the base of the tether
+    poi_head_x = rotation_center_x + (radius / 2) * np.cos(theta_2)
+    poi_head_y = rotation_center_y + (radius / 2) * np.sin(theta_2)
+    poi_handle_x = rotation_center_x - (radius / 2) * np.cos(theta_2)
+    poi_handle_y = rotation_center_y - (radius / 2) * np.sin(theta_2)
 
     # Set up the plot
     ax.set_xlim(-armspan_meters, armspan_meters)
     ax.set_ylim(-armspan_meters, armspan_meters)
     ax.set_aspect('equal', adjustable='box')
-    ax.set_title('Extension')
+    ax.set_title('10 Petal Antispin')
     ax.set_xlabel('Head Leading')
     ax.set_xticks([])
     ax.set_yticks([])
 
     # Poi elements
-    poi_head, = ax.plot([], [], 'go', markersize=10)
-    poi_head_trail, = ax.plot([], [], color='g', linewidth=1.5, alpha=0.5)
-    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=0.5)
-    poi_handle_trail, = ax.plot([], [], color='g', linewidth=1.5, alpha=0, visible=False)
+    poi_head, = ax.plot([], [], 'ro', markersize=10)
+    poi_head_trail, = ax.plot([], [], color='r', linewidth=1.5, alpha=0.5)
+    poi_handle, = ax.plot([], [], 'bo', markersize=10)
+    poi_handle_trail, = ax.plot([], [], color='b', linewidth=1.5, alpha=0.5)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 
     ax.add_line(poi_tether)

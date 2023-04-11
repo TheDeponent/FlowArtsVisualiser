@@ -26,8 +26,8 @@ def generate_ThreePetalAnti(fig, ax, head_color, handle_color):
     ax.set_xlim(-armspan_meters, armspan_meters)
     ax.set_ylim(-armspan_meters, armspan_meters)
     ax.set_aspect('equal', adjustable='box')
-    ax.set_title('5 Petal Antispin')
-    ax.set_xlabel('Head Leading')
+    title = "3 Petal Antispin"
+    xlabel = "Head Leading"
     ax.set_xticks([])
     ax.set_yticks([])
 
@@ -73,4 +73,4 @@ def generate_ThreePetalAnti(fig, ax, head_color, handle_color):
     # Create the animation
     ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
-    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether)
+    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel

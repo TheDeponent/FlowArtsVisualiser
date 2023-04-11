@@ -14,23 +14,6 @@ from TwoPetalInspin import generate_TwoPetalInspin
 from FourPetalInspin import generate_FourPetalInspin
 from CatEye import generate_Cateye
 
-def combine_patterns(fig, ax, pattern1, pattern2, head_color1, handle_color1, head_color2, handle_color2):
-    ax, update1, elements1 = pattern1(fig, ax, head_color1, handle_color1)
-    ax, update2, elements2 = pattern2(fig, ax, head_color2, handle_color2)
-
-    def combined_update(frame):
-        return update1(frame) + update2(frame)
-
-    num_frames = 360
-    ani = FuncAnimation(fig, combined_update, frames=num_frames, interval=20, blit=True)
-
-    plt.show()
-
-if __name__ == "__main__":
-    #fig, ax = plt.subplots()
-    #combine_patterns(fig, ax, generate_EightPetalIn, generate_Extension)
-    pass
-
 # List of available patterns
 patterns = {
     "Extension": generate_Extension,
@@ -46,24 +29,40 @@ patterns = {
 }
 
 def combine_selected_patterns():
+    # Get the selected patterns
     pattern1_name = selected_pattern1.get()
     pattern2_name = selected_pattern2.get()
     pattern1 = patterns[pattern1_name]
     pattern2 = patterns[pattern2_name]
 
+    # Get the selected colors
     head_color1 = poi_head_color1.get()
     handle_color1 = poi_handle_color1.get()
     head_color2 = poi_head_color2.get()
     handle_color2 = poi_handle_color2.get()
 
+    # Generate the plots for the two patterns
     fig, ax = plt.subplots()
-    combine_patterns(fig, ax, pattern1, pattern2, head_color1, handle_color1, head_color2, handle_color2)
+    ax1, update1, elements1, title1, xlabel1 = pattern1(fig, ax, head_color1, handle_color1)
+    ax2, update2, elements2, title2, xlabel2 = pattern2(fig, ax, head_color2, handle_color2)
 
-def choose_color(color_var, display_label):
-    color = colorchooser.askcolor()[1]
-    if color:
-        color_var.set(color)
-        display_label.config(bg=color)
+    # Define a combined update function for the animation
+    def combined_update(frame):
+        return update1(frame) + update2(frame)
+
+    # Create the animation
+    num_frames = 360
+    ani = FuncAnimation(fig, combined_update, frames=num_frames, interval=20, blit=True)
+
+    # Set the title of the combined graph
+    fig.suptitle(f"{title1} vs {title2}")
+
+    # Set the combined x-axis label
+    ax.set_xlabel(f"{xlabel1} vs {xlabel2}")
+
+    # Show the plot
+    plt.show()
+
 
 # Create the main window
 root = tk.Tk()

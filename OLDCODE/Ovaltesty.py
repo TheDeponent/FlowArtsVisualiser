@@ -1,10 +1,10 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
-#FUCK THIS PATTERN IN PARTICULAR.
 
-def generate_Cateye(fig, ax, head_color, handle_color):
+def generate_Cateye(fig, ax):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
@@ -13,42 +13,31 @@ def generate_Cateye(fig, ax, head_color, handle_color):
     trail_length = num_frames  # Length of the trail in frames
 
     # Calculate angles
-    theta_0 = np.linspace(0, 2 * np.pi, num_frames)
-    theta_1 = np.linspace(2 * np.pi, 0, num_frames)  # reverse order to go clockwise
-    theta_2 = theta_1 + np.pi  # For the poi head's clockwise ellipse
+    theta_1 = np.linspace(np.pi, np.pi -2 * -np.pi, num_frames) #-np.pi to change SPIN DIRECTION, offset of np.pi, np.pi to change STARTING LOCATION
+    theta_2 = (-4 * theta_1 + (np.pi / 2))
 
     # Calculate coordinates
-    a = (armspan_meters / np.pi) * np.cos(np.pi/3)
-    b = (armspan_meters / np.pi) * np.sin(np.pi/3)
-    rotation_center_x = a * np.cos(theta_1)
-    rotation_center_y = b * np.sin(theta_1)
-    rotation_center_x2 = (armspan_meters / 2) * np.cos(theta_1)
-    rotation_center_y2 = (armspan_meters / 2) * np.sin(theta_1)
-
-    # Poi head clockwise ellipse motion
+    rotation_center_x = (armspan_meters / 2) * np.cos(theta_1)
+    rotation_center_y = (armspan_meters / 2) * np.sin(theta_1)
     poi_head_x = rotation_center_x + radius * np.cos(theta_2)
-    poi_head_y = rotation_center_y - radius * np.sin(theta_2)
-    poi_head_x2 = rotation_center_x2 + radius * np.cos(theta_2)
-    poi_head_y2 = rotation_center_y2 - radius * np.sin(theta_2)
-
-    # Poi handle counterclockwise circle
-    poi_handle_x = poi_head_x - radius * np.cos(theta_1)
-    poi_handle_y = poi_head_y - radius * np.sin(theta_1)
+    poi_head_y = rotation_center_y + radius * np.sin(theta_2)
+    poi_handle_x = poi_head_x + radius * np.cos(theta_2 + np.pi)
+    poi_handle_y = poi_head_y + radius * np.sin(theta_2 + np.pi)
 
     # Set up the plot
     ax.set_xlim(-armspan_meters, armspan_meters)
     ax.set_ylim(-armspan_meters, armspan_meters)
     ax.set_aspect('equal', adjustable='box')
-    title = "Catseye"
-    xlabel = "Head Leading"
+    ax.set_title('Cat Eye')
+    ax.set_xlabel('Head Leading')
     ax.set_xticks([])
     ax.set_yticks([])
 
     # Poi elements
-    poi_head, = ax.plot([], [], 'go', markersize=10, alpha=1, color=head_color)
-    poi_head_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=head_color)
-    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=1, color=handle_color)
-    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.0, color=handle_color)
+    poi_head, = ax.plot([], [], 'go', markersize=10)
+    poi_head_trail, = ax.plot([], [], color='g', linewidth=1.5, alpha=0.5)
+    poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=0.5)
+    poi_handle_trail, = ax.plot([], [], color='y', linewidth=1.5, alpha=0.5)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 
     ax.add_line(poi_tether)
@@ -61,8 +50,8 @@ def generate_Cateye(fig, ax, head_color, handle_color):
 
     # Update function for the animation
     def update(frame):
-        poi_head.set_data(poi_head_x[frame], poi_head_y[frame])
-        poi_handle.set_data(poi_handle_x[frame], poi_handle_y[frame])
+        poi_head.set_data((poi_head_x[frame], poi_head_y[frame]))
+        poi_handle.set_data((poi_handle_x[frame], poi_handle_y[frame]))
 
         poi_head_trail_x.append(poi_head_x[frame])
         poi_head_trail_y.append(poi_head_y[frame])
@@ -83,7 +72,14 @@ def generate_Cateye(fig, ax, head_color, handle_color):
 
         return (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether)
 
-    # Create the animation
     ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
+    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), ani
 
-    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel
+
+if __name__ == "__main__":
+    fig, ax = plt.subplots()
+    ax, update, elements, ani = generate_Cateye(fig, ax)
+    fig.ani = ani  # Store the animation object as an attribute of the figure
+
+    # Show the CatEye pattern
+    plt.show()

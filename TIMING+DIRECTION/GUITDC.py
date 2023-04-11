@@ -5,29 +5,29 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
 import os
-# from ThreePetalAnti import generate_ThreePetalAnti
-# from FivePetalAnti import generate_FivePetalAnti
+from ThreePetalAntiTDC import generate_ThreePetalAnti
+from FivePetalAntiTDC import generate_FivePetalAnti
 from TenPetalAntiTDC import generate_TenPetalAnti
-# from TwelvePetalAnti import generate_TwelvePetalAnti
-# from EightPetalInspin import generate_EightPetalIn
-# from FourPetalAnti import generate_FourPetalAnti
-# from TwoPetalInspin import generate_TwoPetalInspin
-# from FourPetalInspin import generate_FourPetalInspin
-# from CatEye import generate_Cateye
+from TwelvePetalAntiTDC import generate_TwelvePetalAnti
+from EightPetalInspinTDC import generate_EightPetalIn
+from FourPetalAntiTDC import generate_FourPetalAnti
+from TwoPetalInspinTDC import generate_TwoPetalInspin
+from FourPetalInspinTDC import generate_FourPetalInspin
+from CatEyeTDC import generate_Cateye
 from ExtensionTDC import generate_Extension
 
 # List of available patterns
 patterns = {
     "Extension": generate_Extension,
-    # "CatEye": generate_Cateye,
-    # "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
+    "CatEye": generate_Cateye,
+    "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
     "10 Petal Antispin (Gunslinger)": generate_TenPetalAnti,
-    # "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,
-    # "5 Petal Antispin": generate_FivePetalAnti,
-    # "4 Petal Antispin": generate_FourPetalAnti,
-    # "4 Petal Inspin": generate_FourPetalInspin,
-    # "3 Petal Antispin": generate_ThreePetalAnti,
-    # "2 Petal Inspin": generate_TwoPetalInspin,
+    "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,
+    "5 Petal Antispin": generate_FivePetalAnti,
+    "4 Petal Antispin": generate_FourPetalAnti,
+    "4 Petal Inspin": generate_FourPetalInspin,
+    "3 Petal Antispin": generate_ThreePetalAnti,
+    "2 Petal Inspin": generate_TwoPetalInspin,
 }
 
 ani = None  # Add this line
@@ -74,7 +74,15 @@ def combine_selected_patterns():
     fig.suptitle(f"{title1} vs {title2}")
 
     # Set the combined x-axis label
-    ax.set_xlabel(f"{xlabel1} vs {xlabel2}")
+    conditions = (start_side1 == start_side2, rotation_direction1 == rotation_direction2)
+    title_map = {
+        (True, True): "Same Time Same Direction",
+        (True, False): "Same Time Opposite Direction",
+        (False, True): "Split Time Same Direction",
+        (False, False): "Split Time Opposite Direction",
+    }
+
+    ax.set_xlabel(title_map[conditions])
 
     # Show the plot
     plt.show()

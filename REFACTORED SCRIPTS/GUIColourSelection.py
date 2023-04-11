@@ -27,6 +27,11 @@ patterns = {
     "3 Petal Antispin": generate_ThreePetalAnti,
     "2 Petal Inspin": generate_TwoPetalInspin,
 }
+def choose_color(color_variable, color_display):
+    color = colorchooser.askcolor(color_variable.get())[1]
+    if color:
+        color_variable.set(color)
+        color_display.config(bg=color)
 
 def combine_selected_patterns():
     # Get the selected patterns

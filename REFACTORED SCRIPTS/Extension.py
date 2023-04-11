@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
@@ -12,8 +11,8 @@ def generate_Extension(fig, ax, head_color, handle_color):
     trail_length = num_frames  # Length of the trail in frames
 
     # Calculate angles
-    theta_1 = np.linspace(0, -2 * np.pi, num_frames)
-    theta_2 = np.linspace(0, 2 * np.pi, num_frames)
+    theta_1 = np.linspace(np.pi, -np.pi, num_frames)
+    theta_2 = np.linspace(np.pi, 3 * np.pi, num_frames)
 
     # Calculate coordinates
     rotation_center_x = (armspan_meters / 2) * np.cos(theta_1)

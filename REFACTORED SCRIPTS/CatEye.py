@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
@@ -49,7 +48,7 @@ def generate_Cateye(fig, ax, head_color, handle_color):
     poi_head, = ax.plot([], [], 'go', markersize=10, alpha=1, color=head_color)
     poi_head_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=head_color)
     poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=1, color=handle_color)
-    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=handle_color)
+    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.0, color=handle_color)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 
     ax.add_line(poi_tether)

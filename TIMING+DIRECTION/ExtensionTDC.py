@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
-def generate_FourPetalAnti(fig, ax, head_color, handle_color):
+def generate_Extension(fig, ax, head_color, handle_color, start_side='left', rotation_direction='clockwise'):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
@@ -10,23 +10,30 @@ def generate_FourPetalAnti(fig, ax, head_color, handle_color):
     radius = 0.45  # poi tether length in meters
     trail_length = num_frames  # Length of the trail in frames
 
+    # Set start position
+    start_position = {'left': np.pi, 'right': 0}
+    start_theta = start_position[start_side]
+
+    # Set rotation direction
+    rotation_multiplier = {'clockwise': -1, 'anticlockwise': 1}
+    rotation_direction_multiplier = rotation_multiplier[rotation_direction]
+
     # Calculate angles
-    theta_1 = np.linspace(0, -2 * np.pi, num_frames)
-    theta_2 = -3 * theta_1
+    theta_1 = np.linspace(start_theta, start_theta + rotation_direction_multiplier * 2 * np.pi, num_frames)
 
     # Calculate coordinates
     rotation_center_x = (armspan_meters / 2) * np.cos(theta_1)
     rotation_center_y = (armspan_meters / 2) * np.sin(theta_1)
-    poi_head_x = rotation_center_x + radius * np.cos(theta_2)
-    poi_head_y = rotation_center_y + radius * np.sin(theta_2)
-    poi_handle_x = poi_head_x + radius * np.cos(theta_2 + np.pi)
-    poi_handle_y = poi_head_y + radius * np.sin(theta_2 + np.pi)
+    poi_head_x = rotation_center_x + (armspan_meters / 2 - radius) * np.cos(theta_1)
+    poi_head_y = rotation_center_y + (armspan_meters / 2 - radius) * np.sin(theta_1)
+    poi_handle_x = poi_head_x + radius * np.cos(theta_1 + np.pi) # follow the base of the tether
+    poi_handle_y = poi_head_y + radius * np.sin(theta_1 + np.pi) # follow the base of the tether
 
     # Set up the plot
     ax.set_xlim(-armspan_meters, armspan_meters)
     ax.set_ylim(-armspan_meters, armspan_meters)
     ax.set_aspect('equal', adjustable='box')
-    title = "4 Petal Antispin"
+    title = "Extension"
     xlabel = "Head Leading"
     ax.set_xticks([])
     ax.set_yticks([])
@@ -73,4 +80,4 @@ def generate_FourPetalAnti(fig, ax, head_color, handle_color):
     # Create the animation
     ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
-    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel
+    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel, start_side, rotation_direction

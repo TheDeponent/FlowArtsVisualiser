@@ -11,18 +11,31 @@ def generate_Cateye(fig, ax):
     armspan_meters = armspan_inches * 0.0254  # Convert to meters
     radius = 0.45  # poi tether length in meters
     trail_length = num_frames  # Length of the trail in frames
+    start_position = np.pi
+
+    # Set start position
+    start_position = {'right': 0, 'left': np.pi}
+    start_theta = start_position[start_side]
+    rotation_multiplier = {'anticlockwise': -1, 'clockwise': 1}
+    rotation_direction_multiplier = rotation_multiplier[rotation_direction]
 
     # Calculate angles
-    theta_1 = np.linspace(np.pi, np.pi -2 * -np.pi, num_frames) #-np.pi to change SPIN DIRECTION, offset of np.pi, np.pi to change STARTING LOCATION
-    theta_2 = (-4 * theta_1 + (np.pi / 2))
+    theta_1 = np.linspace(start_theta, start_theta -2 * (rotation_direction_multiplier * np.pi), num_frames)  # -np.pi to change SPIN DIRECTION, offset of np.pi, np.pi to change STARTING LOCATION
+    theta_2 = theta_1 + np.pi
 
     # Calculate coordinates
-    rotation_center_x = (armspan_meters / 2) * np.cos(theta_1)
-    rotation_center_y = (armspan_meters / 2) * np.sin(theta_1)
+    a = (armspan_meters / np.pi) * np.cos(np.pi / 3)
+    b = (armspan_meters / np.pi) * np.sin(np.pi / 3)
+    rotation_center_x = a * np.cos(theta_1)
+    rotation_center_y = b * np.sin(theta_1)
+
+    # Poi head clockwise ellipse motion
     poi_head_x = rotation_center_x + radius * np.cos(theta_2)
-    poi_head_y = rotation_center_y + radius * np.sin(theta_2)
-    poi_handle_x = poi_head_x + radius * np.cos(theta_2 + np.pi)
-    poi_handle_y = poi_head_y + radius * np.sin(theta_2 + np.pi)
+    poi_head_y = rotation_center_y - radius * np.sin(theta_2)
+
+    # Poi handle counterclockwise circle
+    poi_handle_x = poi_head_x - radius * np.cos(theta_1)
+    poi_handle_y = poi_head_y - radius * np.sin(theta_1)
 
     # Set up the plot
     ax.set_xlim(-armspan_meters, armspan_meters)

@@ -76,7 +76,7 @@ def generate_TwoPetalInspin(fig, ax, head_color, handle_color, start_side='left'
         poi_tether.set_data([poi_head_x[frame], poi_handle_x[frame]],
                             [poi_head_y[frame], poi_handle_y[frame]])
 
-        return (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether)
+        return poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether
 
     # Create the animation
     ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)

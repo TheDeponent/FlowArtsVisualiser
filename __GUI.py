@@ -5,16 +5,17 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
 import os
-from ThreePetalAntiTDC import generate_ThreePetalAnti
-from FivePetalAntiTDC import generate_FivePetalAnti
-from TenPetalAntiTDC import generate_TenPetalAnti
-from TwelvePetalAntiTDC import generate_TwelvePetalAnti
-from EightPetalInspinTDC import generate_EightPetalIn
-from FourPetalAntiTDC import generate_FourPetalAnti
-from TwoPetalInspinTDC import generate_TwoPetalInspin
-from FourPetalInspinTDC import generate_FourPetalInspin
-from CatEyeTDC import generate_Cateye
-from ExtensionTDC import generate_Extension
+from ThreePetalAnti import generate_ThreePetalAnti
+from FivePetalAnti import generate_FivePetalAnti
+from TenPetalAnti import generate_TenPetalAnti
+from TwelvePetalAnti import generate_TwelvePetalAnti
+from EightPetalInspin import generate_EightPetalIn
+from FourPetalAnti import generate_FourPetalAnti
+from TwoPetalInspin import generate_TwoPetalInspin
+from FourPetalInspin import generate_FourPetalInspin
+from CatEye import generate_Cateye
+from Extension import generate_Extension
+from TwoPetalInspinVertical import generate_TwoPetalInspinV
 
 # List of available patterns
 patterns = {
@@ -26,8 +27,9 @@ patterns = {
     "5 Petal Antispin": generate_FivePetalAnti,
     "4 Petal Antispin": generate_FourPetalAnti,
     "4 Petal Inspin": generate_FourPetalInspin,
-    "3 Petal Antispin": generate_ThreePetalAnti,
-    "2 Petal Inspin": generate_TwoPetalInspin,
+    "3 Petal Antispin (Triquetra)": generate_ThreePetalAnti,
+    "2 Petal Inspin (Horizontal)": generate_TwoPetalInspin,
+    "2 Petal Inspin (Vertical)": generate_TwoPetalInspinV
 }
 
 ani = None  # Add this line
@@ -107,7 +109,7 @@ tk.Label(root, text="Right Hand").grid(row=1, column=0)
 selected_pattern2 = tk.StringVar()
 pattern2_menu = ttk.Combobox(root, textvariable=selected_pattern2, values=list(patterns.keys()))
 pattern2_menu.grid(row=1, column=1)
-pattern2_menu.current(0) #CHANGE WHEN YOU PUT IN MORE PATTERNS
+pattern2_menu.current(0)
 
 # Color selection for poi head (Pattern 1)
 tk.Label(root, text="Poi Head Color (Left Hand):").grid(row=2, column=0)

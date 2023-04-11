@@ -13,7 +13,7 @@ def generate_FivePetalAnti(fig, ax, head_color, handle_color, start_side='left',
     # Set start position
     start_position = {'right': 0, 'left': np.pi}
     start_theta = start_position[start_side]
-    rotation_multiplier = {'anticlockwise': -1, 'clockwise': 1}
+    rotation_multiplier = {'clockwise': -1, 'anticlockwise': 1}
     rotation_direction_multiplier = rotation_multiplier[rotation_direction]
 
     # Calculate angles

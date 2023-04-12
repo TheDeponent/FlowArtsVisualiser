@@ -14,21 +14,27 @@ from FourPetalAnti import generate_FourPetalAnti
 from TwoPetalInspin import generate_TwoPetalInspin
 from FourPetalInspin import generate_FourPetalInspin
 from CatEye import generate_Cateye
+from CatEyeHorizontal import generate_CateyeH
 from Extension import generate_Extension
 from TwoPetalInspinVertical import generate_TwoPetalInspinV
 from StaticSpin import generate_StaticSpin
+from Isolation import generate_Isolation
 from StaticPendulum import generate_StaticPendulum
 from Pendulum import generate_Pendulum
 from ExtendedPendulum import generate_ExtendedPendulum
+from DownwardsCAP import generate_CAP
 
 # List of available patterns
 patterns = {
     "Extension": generate_Extension,
-    "CatEye": generate_Cateye,
+    "Vertical Cateye": generate_Cateye,
+    "Horizontal Cateye": generate_CateyeH,
+    "Isolation": generate_Isolation,
     "Static Spin": generate_StaticSpin,
     "Static Pendulum": generate_StaticPendulum,
     "Pendulum": generate_Pendulum,
     "Extended Pendulum": generate_ExtendedPendulum,
+    "Downwards CAP": generate_CAP,
     "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
     "10 Petal Antispin (Gunslinger)": generate_TenPetalAnti,
     "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,

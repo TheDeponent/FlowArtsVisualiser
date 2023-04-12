@@ -183,6 +183,47 @@ rotation_direction2_menu.current(1)
 combine_button = tk.Button(root, text="Combine Patterns", command=combine_selected_patterns)
 combine_button.grid(row=12, column=0, columnspan=1)
 
+def update_rotation_direction_menu(selected_menu, other_menu):
+    selected_pattern = selected_pattern1.get() if selected_menu == rotation_direction1_menu else selected_pattern2.get()
+    if selected_pattern in ["Static Pendulum", "Pendulum", "Extended Pendulum"]:
+        selected_menu.configure(state="disabled")
+    else:
+        selected_menu.configure(state="readonly")
+    other_pattern = selected_pattern2.get() if selected_menu == rotation_direction1_menu else selected_pattern1.get()
+    if other_pattern in ["Static Pendulum", "Pendulum", "Extended Pendulum"]:
+        other_menu.configure(state="disabled")
+    else:
+        other_menu.configure(state="readonly")
+
+# Create labels and dropdown menus for selecting patterns
+tk.Label(root, text="Left Hand").grid(row=0, column=0)
+selected_pattern1 = tk.StringVar()
+pattern1_menu = ttk.Combobox(root, textvariable=selected_pattern1, values=list(patterns.keys()), state="readonly")
+pattern1_menu.grid(row=0, column=1)
+pattern1_menu.current(0)
+pattern1_menu.bind("<<ComboboxSelected>>", lambda event: update_rotation_direction_menu(rotation_direction1_menu, rotation_direction2_menu))
+
+tk.Label(root, text="Rotation Direction (Left Hand):").grid(row=7, column=0)
+rotation_direction1_var = tk.StringVar(value='clockwise')
+rotation_direction1_menu = ttk.Combobox(root, textvariable=rotation_direction1_var, values=['clockwise', 'anticlockwise'], state="readonly")
+rotation_direction1_menu.grid(row=7, column=1)
+rotation_direction1_menu.current(0)
+
+tk.Label(root, text="Right Hand").grid(row=1, column=0)
+selected_pattern2 = tk.StringVar()
+pattern2_menu = ttk.Combobox(root, textvariable=selected_pattern2, values=list(patterns.keys()), state="readonly")
+pattern2_menu.grid(row=1, column=1)
+pattern2_menu.current(0)
+pattern2_menu.bind("<<ComboboxSelected>>", lambda event: update_rotation_direction_menu(rotation_direction2_menu, rotation_direction1_menu))
+
+tk.Label(root, text="Rotation Direction (Right Hand):").grid(row=9, column=0)
+rotation_direction2_var = tk.StringVar(value='clockwise')
+rotation_direction2_menu = ttk.Combobox(root, textvariable=rotation_direction2_var, values=['clockwise', 'anticlockwise'], state="readonly")
+rotation_direction2_menu.grid(row=9, column=1)
+rotation_direction2_menu.current(1)
+
+update_rotation_direction_menu(rotation_direction1_menu, rotation_direction2_menu)
+
 # Save GIF button
 def save_gif():
     writer = PillowWriter(fps=60)

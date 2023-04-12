@@ -2,45 +2,52 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
-#FUCK THIS PATTERN IN PARTICULAR.
 
-def generate_Cateye(fig, ax, head_color, handle_color):
+def generate_ExtendedPendulum(fig, ax, head_color, handle_color, start_side='left', rotation_direction='clockwise'):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
     armspan_meters = armspan_inches * 0.0254  # Convert to meters
-    radius = 0.45  # poi tether length in meters
+    tether_length = 0.42  # poi tether length in meters
+    max_length = armspan_meters / 2  # maximum length of the pendulum
     trail_length = num_frames  # Length of the trail in frames
 
-    # Calculate angles
-    theta_0 = np.linspace(0, 2 * np.pi, num_frames)
-    theta_1 = np.linspace(2 * np.pi, 0, num_frames)  # reverse order to go clockwise
-    theta_2 = theta_1 + np.pi  # For the poi head's clockwise ellipse
+    # Set start position
+    start_position = {'right': -np.pi / 2, 'left': np.pi / 2}
+    start_theta = start_position[start_side]
 
-    # Calculate coordinates
-    a = (armspan_meters / np.pi) * np.cos(np.pi/3)
-    b = (armspan_meters / np.pi) * np.sin(np.pi/3)
-    rotation_center_x = a * np.cos(theta_1)
-    rotation_center_y = b * np.sin(theta_1)
-    rotation_center_x2 = (armspan_meters / 2) * np.cos(theta_1)
-    rotation_center_y2 = (armspan_meters / 2) * np.sin(theta_1)
+    # Set swing direction
+    swing_multiplier = {'clockwise': -1, 'anticlockwise': 1}
+    swing_direction_multiplier = swing_multiplier[rotation_direction]
 
-    # Poi head clockwise ellipse motion
-    poi_head_x = rotation_center_x + radius * np.cos(theta_2)
-    poi_head_y = rotation_center_y - radius * np.sin(theta_2)
-    poi_head_x2 = rotation_center_x2 + radius * np.cos(theta_2)
-    poi_head_y2 = rotation_center_y2 - radius * np.sin(theta_2)
+    # Calculate time for pendulum motion
+    time = np.linspace(0, num_frames / 30, num_frames)  # Assuming 30 frames per second
 
-    # Poi handle counterclockwise circle
-    poi_handle_x = poi_head_x - radius * np.cos(theta_1)
-    poi_handle_y = poi_head_y - radius * np.sin(theta_1)
+    # Calculate angles for pendulum motion
+    period = num_frames / 30  # The period is equal to the total duration of the animation
+    omega = 2 * np.pi / period  # angular velocity adjusted to complete one oscillation during the animation
+    amplitude = start_theta
+
+    # Switch positions of poi head and handle by swapping theta_head and theta_handle calculations
+    theta_handle = np.pi / 2 + amplitude * np.cos(omega * time * swing_direction_multiplier)  # handle angle
+    theta_head = np.pi / 2 + amplitude * np.cos(
+        omega * time * swing_direction_multiplier)  # head angle is 90 degrees anticlockwise from the handle angle
+
+    # Calculate coordinates for handle
+    poi_handle_x = max_length * np.cos(theta_handle)
+    poi_handle_y = -max_length * np.sin(
+        theta_handle)  # Negative sign added to ensure poi handle stays at or below center level
+
+    # Calculate coordinates for head
+    poi_head_x = poi_handle_x + tether_length * np.cos(theta_head)
+    poi_head_y = poi_handle_y - tether_length * np.sin(theta_head)  # Negative sign added to ensure poi head stays at or below head level
 
     # Set up the plot
     ax.set_xlim(-armspan_meters, armspan_meters)
     ax.set_ylim(-armspan_meters, armspan_meters)
     ax.set_aspect('equal', adjustable='box')
-    title = "Catseye"
-    xlabel = "Head Leading"
+    title = "Extended Pendulum"
+    xlabel= "Head Leading"
     ax.set_xticks([])
     ax.set_yticks([])
 
@@ -60,6 +67,7 @@ def generate_Cateye(fig, ax, head_color, handle_color):
     poi_handle_trail_y = []
 
     # Update function for the animation
+
     def update(frame):
         poi_head.set_data(poi_head_x[frame], poi_head_y[frame])
         poi_handle.set_data(poi_handle_x[frame], poi_handle_y[frame])
@@ -86,4 +94,4 @@ def generate_Cateye(fig, ax, head_color, handle_color):
     # Create the animation
     ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
-    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel
+    return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel, start_side, rotation_direction

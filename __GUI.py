@@ -1,33 +1,43 @@
+import os
 import tkinter as tk
+import matplotlib.pyplot as plt
 from tkinter import ttk
 from tkinter import colorchooser
-import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
-import os
-# from ThreePetalAnti import generate_ThreePetalAnti
-# from FivePetalAnti import generate_FivePetalAnti
-from TenPetalAntiTDC import generate_TenPetalAnti
-# from TwelvePetalAnti import generate_TwelvePetalAnti
-# from EightPetalInspin import generate_EightPetalIn
-# from FourPetalAnti import generate_FourPetalAnti
-# from TwoPetalInspin import generate_TwoPetalInspin
-# from FourPetalInspin import generate_FourPetalInspin
-# from CatEye import generate_Cateye
-from ExtensionTDC import generate_Extension
+from ThreePetalAnti import generate_ThreePetalAnti
+from FivePetalAnti import generate_FivePetalAnti
+from TenPetalAnti import generate_TenPetalAnti
+from TwelvePetalAnti import generate_TwelvePetalAnti
+from EightPetalInspin import generate_EightPetalIn
+from FourPetalAnti import generate_FourPetalAnti
+from TwoPetalInspin import generate_TwoPetalInspin
+from FourPetalInspin import generate_FourPetalInspin
+from CatEye import generate_Cateye
+from Extension import generate_Extension
+from TwoPetalInspinVertical import generate_TwoPetalInspinV
+from StaticSpin import generate_StaticSpin
+from StaticPendulum import generate_StaticPendulum
+from Pendulum import generate_Pendulum
+from ExtendedPendulum import generate_ExtendedPendulum
 
 # List of available patterns
 patterns = {
     "Extension": generate_Extension,
-    # "CatEye": generate_Cateye,
-    # "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
+    "CatEye": generate_Cateye,
+    "Static Spin": generate_StaticSpin,
+    "Static Pendulum": generate_StaticPendulum,
+    "Pendulum": generate_Pendulum,
+    "Extended Pendulum": generate_ExtendedPendulum,
+    "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
     "10 Petal Antispin (Gunslinger)": generate_TenPetalAnti,
-    # "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,
-    # "5 Petal Antispin": generate_FivePetalAnti,
-    # "4 Petal Antispin": generate_FourPetalAnti,
-    # "4 Petal Inspin": generate_FourPetalInspin,
-    # "3 Petal Antispin": generate_ThreePetalAnti,
-    # "2 Petal Inspin": generate_TwoPetalInspin,
+    "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,
+    "5 Petal Antispin": generate_FivePetalAnti,
+    "4 Petal Antispin": generate_FourPetalAnti,
+    "4 Petal Inspin": generate_FourPetalInspin,
+    "3 Petal Antispin (Triquetra)": generate_ThreePetalAnti,
+    "2 Petal Inspin (Horizontal)": generate_TwoPetalInspin,
+    "2 Petal Inspin (Vertical)": generate_TwoPetalInspinV
 }
 
 ani = None  # Add this line
@@ -74,7 +84,15 @@ def combine_selected_patterns():
     fig.suptitle(f"{title1} vs {title2}")
 
     # Set the combined x-axis label
-    ax.set_xlabel(f"{xlabel1} vs {xlabel2}")
+    conditions = (start_side1 == start_side2, rotation_direction1 == rotation_direction2)
+    title_map = {
+        (True, True): "Same Time Same Direction",
+        (True, False): "Same Time Opposite Direction",
+        (False, True): "Split Time Same Direction",
+        (False, False): "Split Time Opposite Direction",
+    }
+
+    ax.set_xlabel(title_map[conditions])
 
     # Show the plot
     plt.show()
@@ -99,7 +117,7 @@ tk.Label(root, text="Right Hand").grid(row=1, column=0)
 selected_pattern2 = tk.StringVar()
 pattern2_menu = ttk.Combobox(root, textvariable=selected_pattern2, values=list(patterns.keys()))
 pattern2_menu.grid(row=1, column=1)
-pattern2_menu.current(0) #CHANGE WHEN YOU PUT IN MORE PATTERNS
+pattern2_menu.current(0)
 
 # Color selection for poi head (Pattern 1)
 tk.Label(root, text="Poi Head Color (Left Hand):").grid(row=2, column=0)

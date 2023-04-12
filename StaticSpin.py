@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 from matplotlib.lines import Line2D
 
-def generate_TwoPetalInspinV(fig, ax, head_color, handle_color, start_side='left', rotation_direction='clockwise'):
+def generate_StaticSpin(fig, ax, head_color, handle_color, start_side='left', rotation_direction='clockwise'):
     # Parameters
     num_frames = 360
     armspan_inches = 5 * 12 + 9  # 5'9" in inches
@@ -11,31 +11,28 @@ def generate_TwoPetalInspinV(fig, ax, head_color, handle_color, start_side='left
     trail_length = num_frames  # Length of the trail in frames
 
     # Set start position
-    start_position = {'right': 0, 'left': np.pi}
-    start_theta = start_position[start_side] + np.pi/2 # Add np.pi/2 to start 1/4 through the pattern
+    start_position = {'left': np.pi, 'right': 0}
+    start_theta = start_position[start_side]
 
     # Set rotation direction
-    rotation_multiplier = {'anticlockwise': -1, 'clockwise': 1}
+    rotation_multiplier = {'clockwise': -1, 'anticlockwise': 1}
     rotation_direction_multiplier = rotation_multiplier[rotation_direction]
 
     # Calculate angles
     theta_1 = np.linspace(start_theta, start_theta + rotation_direction_multiplier * 2 * np.pi, num_frames)
-    theta_2 = 3 * theta_1  # Multiply by 3 for 4 spins per circle (4 - 1)
 
     # Calculate coordinates
-    rotation_center_x = (armspan_meters / 2) * np.sin(theta_1)
-    rotation_center_y = (armspan_meters / 2) * np.cos(theta_1)
-    poi_head_x = rotation_center_x + radius * np.sin(theta_2)
-    poi_head_y = rotation_center_y + radius * np.cos(theta_2)
-    poi_handle_x = poi_head_x + radius * np.sin(theta_2 + np.pi)
-    poi_handle_y = poi_head_y + radius * np.cos(theta_2 + np.pi)
+    poi_head_x = radius * np.cos(theta_1)
+    poi_head_y = radius * np.sin(theta_1)
+    poi_handle_x = np.zeros(num_frames)  # Set handle x-coordinate to 0
+    poi_handle_y = np.zeros(num_frames)  # Set handle y-coordinate to 0
 
     # Set up the plot
     ax.set_xlim(-armspan_meters, armspan_meters)
     ax.set_ylim(-armspan_meters, armspan_meters)
     ax.set_aspect('equal', adjustable='box')
-    title = "2 Petal Inspin"
-    xlabel = "Head Leading"
+    title = "Static Spin"
+    xlabel= "Head Leading"
     ax.set_xticks([])
     ax.set_yticks([])
 
@@ -43,7 +40,7 @@ def generate_TwoPetalInspinV(fig, ax, head_color, handle_color, start_side='left
     poi_head, = ax.plot([], [], 'go', markersize=10, alpha=1, color=head_color)
     poi_head_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=head_color)
     poi_handle, = ax.plot([], [], 'yo', markersize=10, alpha=1, color=handle_color)
-    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0, color=handle_color)
+    poi_handle_trail, = ax.plot([], [], linewidth=1.5, alpha=0.5, color=handle_color)
     poi_tether = Line2D([], [], color='k', linewidth=0.5)
 
     ax.add_line(poi_tether)
@@ -55,6 +52,7 @@ def generate_TwoPetalInspinV(fig, ax, head_color, handle_color, start_side='left
     poi_handle_trail_y = []
 
     # Update function for the animation
+
     def update(frame):
         poi_head.set_data(poi_head_x[frame], poi_head_y[frame])
         poi_handle.set_data(poi_handle_x[frame], poi_handle_y[frame])
@@ -79,6 +77,6 @@ def generate_TwoPetalInspinV(fig, ax, head_color, handle_color, start_side='left
         return (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether)
 
     # Create the animation
-    ani = FuncAnimation(fig, update, frames=num_frames, interval=5, blit=True)
+    ani = FuncAnimation(fig, update, frames=num_frames, interval=20, blit=True)
 
     return ax, update, (poi_head, poi_head_trail, poi_handle, poi_handle_trail, poi_tether), title, xlabel, start_side, rotation_direction

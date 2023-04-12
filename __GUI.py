@@ -1,10 +1,10 @@
+import os
 import tkinter as tk
+import matplotlib.pyplot as plt
 from tkinter import ttk
 from tkinter import colorchooser
-import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
-import os
 from ThreePetalAnti import generate_ThreePetalAnti
 from FivePetalAnti import generate_FivePetalAnti
 from TenPetalAnti import generate_TenPetalAnti
@@ -16,11 +16,19 @@ from FourPetalInspin import generate_FourPetalInspin
 from CatEye import generate_Cateye
 from Extension import generate_Extension
 from TwoPetalInspinVertical import generate_TwoPetalInspinV
+from StaticSpin import generate_StaticSpin
+from StaticPendulum import generate_StaticPendulum
+from Pendulum import generate_Pendulum
+from ExtendedPendulum import generate_ExtendedPendulum
 
 # List of available patterns
 patterns = {
     "Extension": generate_Extension,
     "CatEye": generate_Cateye,
+    "Static Spin": generate_StaticSpin,
+    "Static Pendulum": generate_StaticPendulum,
+    "Pendulum": generate_Pendulum,
+    "Extended Pendulum": generate_ExtendedPendulum,
     "12 Petal Antispin (Gunslinger)": generate_TwelvePetalAnti,
     "10 Petal Antispin (Gunslinger)": generate_TenPetalAnti,
     "8 Petal Inspin (Gunslinger)": generate_EightPetalIn,

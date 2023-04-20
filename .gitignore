@@ -1,8 +1,8 @@
 # Default ignored files
-/shelf/
-/workspace.xml
+.idea
+venv
 GIFs
 Gifs
 OLDCODE
-SPIRALTEST.py
+OLDCODE/SPIRALTEST.py
 PromptLibrary
